@@ -21,9 +21,7 @@ session = requests.Session()
 __hm = Headers.mod
 
 def _called(r, *args, **kwargs):
-    if r.status_code == 200 and 'json' in r.headers['Content-Type']:
-        # TODO: Add a way to check if the response is valid
-        pass
+    pass
 
 
 def __pass_mo(access_token: str, text: str):
@@ -93,12 +91,12 @@ def ask(
             {
                 "id": str(uuid.uuid4()),
                 "role": "user",
-                "content": {"content_type": "text", "parts": [str(prompt)]},
+                "content": {"content_type": "text", "parts": [prompt]},
             }
         ],
         "conversation_id": conversation_id,
         "parent_message_id": previous_convo_id,
-        "model": "text-davinci-002-render"
+        "model": "text-davinci-002-render",
     }
     try:
         response = session.post(
@@ -123,5 +121,5 @@ def ask(
         else:
             return f"[Status Code] {response.status_code} | [Response Text] {response.text}", None, None
     except Exception as e:
-        print(">> Error when calling OpenAI API: " + str(e))
+        print(f">> Error when calling OpenAI API: {str(e)}")
         return "400", None, None
